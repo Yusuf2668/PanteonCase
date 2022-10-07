@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 764029382104194236}
   - component: {fileID: 764029382104194211}
   - component: {fileID: 764029382104194210}
-  - component: {fileID: -763441174748015956}
   - component: {fileID: 7452957918593095862}
-  - component: {fileID: -1394776709917086394}
   - component: {fileID: 7264990239612819977}
+  - component: {fileID: 3483702670769046664}
   m_Layer: 7
   m_Name: Barracks
   m_TagString: Barracks
@@ -100,7 +99,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0023308396, y: 0.00466156}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -111,20 +110,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2, y: 1.2}
+  m_Size: {x: 1.1792485, y: 1.2025568}
   m_EdgeRadius: 0
---- !u!114 &-763441174748015956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 764029382104194209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af88d3c47385fea418562ae1b1250335, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &7452957918593095862
 Rigidbody2D:
   serializedVersion: 4
@@ -144,20 +131,8 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &-1394776709917086394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 764029382104194209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fd2c26acda92d94b9bc9e5e6a9d2214, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7264990239612819977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,5 +143,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af88d3c47385fea418562ae1b1250335, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3483702670769046664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764029382104194209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff85ba45564ab748866493f50a1ae34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

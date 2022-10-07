@@ -12,6 +12,7 @@ public class BuildingController : MonoBehaviour
         }
         EventManager.Instance.CanDropItem(false);
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Cell"))

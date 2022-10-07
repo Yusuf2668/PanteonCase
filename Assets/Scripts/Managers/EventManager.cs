@@ -8,9 +8,16 @@ public class EventManager : MonoSingleton<EventManager>
 {
     public event Action<GameObject> onSelectedItem;
     public event Action<bool> canDropItem;
-    public event Action buildingDropped;
 
-    public void SelectedProduct(GameObject _gameObject)
+    public event Action buildingDropped;
+    public event Action onLeftMouseClick;
+    public event Action onRightMouseClick;
+
+    public void LeftMouseClick() { onLeftMouseClick?.Invoke(); }
+    public void RightMouseClick() { onRightMouseClick?.Invoke(); }
+
+
+    public void SelectedBuilding(GameObject _gameObject)
     {
         if (onSelectedItem != null)
         {
@@ -26,4 +33,19 @@ public class EventManager : MonoSingleton<EventManager>
     }
 
     public void BuildingDropped() { buildingDropped?.Invoke(); }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            LeftMouseClick();
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            RightMouseClick();
+        }
+    }
+
+
+
 }

@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
-public class ItemSelectorManager : MonoBehaviour
+public class ItemSelectorManager : MonoSingleton<ItemSelectorManager>
 {
     [SerializeField] BuildType buildType;
+
+    public bool SelectedItem => _selectedItem;
 
     [SerializeField] private LayerMask buildingHitLayerMask;
     [SerializeField] private LayerMask productMenuHitLayerMask;
@@ -14,7 +17,7 @@ public class ItemSelectorManager : MonoBehaviour
     private RaycastHit2D productMenuhit;
     private RaycastHit2D buildingHit;
 
-    private bool selectedItem = false;
+    private bool _selectedItem = false;
     private bool canDropItem = true;
 
     private GameObject selectedObject;
@@ -26,18 +29,7 @@ public class ItemSelectorManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            productMenuhit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, productMenuHitLayerMask);
-            if (productMenuhit.collider == null)
-            {
-                return;
-            }
-            DropBuilding();
-            SelectBuildingProduct();
-            SelectBuilding();
-        }
-        if (selectedItem)
+        if (_selectedItem)
         {
             productMenuhit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, productMenuHitLayerMask);
             if (productMenuhit.collider == null)
@@ -51,15 +43,33 @@ public class ItemSelectorManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Instance.canDropItem += CanDropItem;
+        EventManager.Instance.onLeftMouseClick += MouseLeftClick;
     }
-
     private void OnDisable()
     {
         EventManager.Instance.canDropItem -= CanDropItem;
+        EventManager.Instance.onLeftMouseClick -= MouseLeftClick;
     }
+
+    private void MouseLeftClick()
+    {
+        DropBuilding();
+        productMenuhit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, productMenuHitLayerMask);
+        if (productMenuhit.collider == null)
+        {
+            return;
+        }
+        SelectBuildingProduct();
+        SelectBuilding();
+    }
+
 
     private void CanDropItem(bool value)
     {
+        if (!selectedObject)
+        {
+            return;
+        }
         canDropItem = value;
         if (!canDropItem)
         {
@@ -76,12 +86,12 @@ public class ItemSelectorManager : MonoBehaviour
         if (productMenuhit.transform.CompareTag("Cell") && selectedObject.CompareTag("PowerPlant"))
         {
             selectedObject.transform.position = productMenuhit.transform.position + new Vector3(productMenuhit.transform.GetComponent<SpriteRenderer>().sprite.bounds.min.x, productMenuhit.transform.GetComponent<SpriteRenderer>().sprite.bounds.min.y * 2);
-            selectedObject.transform.position = new Vector3(Mathf.Clamp(selectedObject.transform.position.x, -1.2f + buildType.powerPlantSprite.bounds.size.x / 2, 1.2f), Mathf.Clamp(selectedObject.transform.position.y, -1.18f + buildType.powerPlantSprite.bounds.size.y / 2, 1.18f));
+            selectedObject.transform.position = new Vector3(Mathf.Clamp(selectedObject.transform.position.x, -1.2f + buildType.powerPlantSprite.bounds.size.x / 2, 1.2f), Mathf.Clamp(selectedObject.transform.position.y, -1.18f + buildType.powerPlantSprite.bounds.size.y / 3, 1.18f));
         }
         else if (productMenuhit.transform.CompareTag("Cell") && selectedObject.CompareTag("Barracks"))
         {
             selectedObject.transform.position = productMenuhit.transform.position + productMenuhit.transform.GetComponent<SpriteRenderer>().sprite.bounds.min;
-            selectedObject.transform.position = new Vector3(Mathf.Clamp(selectedObject.transform.position.x, -1.2f + buildType.barracksSprite.bounds.size.x / 2, 1.2f - buildType.barracksSprite.bounds.size.x / 2.5f), Mathf.Clamp(selectedObject.transform.position.y, -1.18f + buildType.barracksSprite.bounds.size.y / 2, 1.18f - buildType.barracksSprite.bounds.size.y / 3));
+            selectedObject.transform.position = new Vector3(Mathf.Clamp(selectedObject.transform.position.x, -1.2f + buildType.barracksSprite.bounds.size.x / 2, 1.2f - buildType.barracksSprite.bounds.size.x / 2.5f), Mathf.Clamp(selectedObject.transform.position.y, -1f + buildType.barracksSprite.bounds.size.y / 4, 1.2f - buildType.barracksSprite.bounds.size.y / 2));
         }
     }
 
@@ -91,19 +101,20 @@ public class ItemSelectorManager : MonoBehaviour
         {
             return;
         }
-        if (selectedItem && canDropItem)
+        if (_selectedItem && canDropItem)
         {
-            selectedItem = false;
-            selectedObject.GetComponent<BuildingController>().enabled = true;
+            _selectedItem = false;
             EventManager.Instance.BuildingDropped();
+            selectedObject.GetComponent<BoxCollider2D>().isTrigger = false;
+            AstarPathEditor.MenuScan();
+            selectedObject = null;
         }
     }
-
     private void SelectBuildingProduct()//saðdaki Product tablosundan yapý seçmemize yardýmcý oluyor
     {
-        if (!selectedItem && !productMenuhit.transform.CompareTag("Cell"))
+        if (!_selectedItem && !productMenuhit.transform.CompareTag("Cell"))
         {
-            selectedItem = true;
+            _selectedItem = true;
             selectedObject = ObjectPoolManager.Instance.GetPoolObject(productMenuhit.transform.tag);
         }
     }
@@ -114,6 +125,6 @@ public class ItemSelectorManager : MonoBehaviour
         {
             return;
         }
-        EventManager.Instance.SelectedProduct(buildingHit.transform.gameObject);
+        EventManager.Instance.SelectedBuilding(buildingHit.transform.gameObject);
     }
 }

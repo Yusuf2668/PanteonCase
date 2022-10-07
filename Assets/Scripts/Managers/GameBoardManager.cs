@@ -12,7 +12,7 @@ public class GameBoardManager : MonoSingleton<GameBoardManager>
 
     [SerializeField] private Transform firstCellinstantiateposition;
 
-    private List<GameObject> cellList = new List<GameObject>();
+    public List<GameObject> cellList = new List<GameObject>();
 
     private int cellLine;
 
