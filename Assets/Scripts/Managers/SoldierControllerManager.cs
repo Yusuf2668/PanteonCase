@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class SoldierControllerManager : MonoBehaviour
 {
-    [SerializeField] private LayerMask soldierLayerMask;
+    [SerializeField] private LayerMask _soldierLayerMask;
 
-    [SerializeField] GameObject target;
-    private GameObject selectedSoldier;
+    [SerializeField] GameObject _target;
+    private GameObject _selectedSoldier;
 
-    private RaycastHit2D soldierHit;
+    private RaycastHit2D _soldierHit;
 
     private Camera _camera;
 
@@ -30,17 +30,17 @@ public class SoldierControllerManager : MonoBehaviour
 
     private void SelectSoldier()
     {
-        if (selectedSoldier)
+        if (_selectedSoldier)
         {
-            selectedSoldier.GetComponent<Pathfinding.AIDestinationSetter>().canMove = false; //önceden seçili olan soldier ýn canMove özelliðini kapamak için
+            _selectedSoldier.GetComponent<Pathfinding.AIDestinationSetter>().canMove = false; //önceden seçili olan soldier ýn canMove özelliðini kapamak için
         }
-        soldierHit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, soldierLayerMask);
-        if (soldierHit.collider == null)
+        _soldierHit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, _soldierLayerMask);
+        if (_soldierHit.collider == null)
         {
             return;
         }
-        selectedSoldier = soldierHit.transform.gameObject;
-        target.transform.position = selectedSoldier.transform.position;
-        selectedSoldier.GetComponent<Pathfinding.AIDestinationSetter>().canMove = true;
+        _selectedSoldier = _soldierHit.transform.gameObject;
+        _target.transform.position = _selectedSoldier.transform.position;
+        _selectedSoldier.GetComponent<Pathfinding.AIDestinationSetter>().canMove = true;
     }
 }

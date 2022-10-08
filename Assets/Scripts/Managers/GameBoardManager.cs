@@ -5,23 +5,23 @@ using UnityEngine.UI;
 
 public class GameBoardManager : MonoSingleton<GameBoardManager>
 {
-    [SerializeField] private int gridHeight;
-    [SerializeField] private int gridWidth;
+    [SerializeField] private Sprite _cellSprite;
 
-    [SerializeField] private Sprite cellSprite;
+    [SerializeField] private Transform _firstCellinstantiateposition;
 
-    [SerializeField] private Transform firstCellinstantiateposition;
+    private int _gridHeight = 8;
+    private int _gridWidth = 8;
 
     public List<GameObject> cellList = new List<GameObject>();
 
-    private int cellLine;
+    private int _cellLine;
 
-    private Vector3 cellPositionOffset;
-    private Vector2 cellBound;
+    private Vector3 _cellPositionOffset;
+    private Vector2 _cellBound;
 
     private void Awake()
     {
-        cellBound = cellSprite.bounds.size;
+        _cellBound = _cellSprite.bounds.size;
     }
 
     private void Start()
@@ -32,7 +32,7 @@ public class GameBoardManager : MonoSingleton<GameBoardManager>
 
     private void InstantiateCell()//Bütün hücreleri yaratýr 
     {
-        for (int i = 0; i < gridHeight * gridWidth; i++)
+        for (int i = 0; i < _gridHeight * _gridWidth; i++)
         {
             cellList.Add(FactoryManager.Instance.CreateNewObject("Cell", transform));
         }
@@ -40,18 +40,18 @@ public class GameBoardManager : MonoSingleton<GameBoardManager>
 
     private void SetPositionCell()//Bütün hücrelerin pozisyonunu düzenler
     {
-        cellLine = 0;
-        cellPositionOffset = Vector3.zero;
-        for (int i = 0; i < gridHeight; i++)
+        _cellLine = 0;
+        _cellPositionOffset = Vector3.zero;
+        for (int i = 0; i < _gridHeight; i++)
         {
-            for (int j = 0; j < gridWidth; j++)
+            for (int j = 0; j < _gridWidth; j++)
             {
-                cellList[cellLine].transform.position = firstCellinstantiateposition.position + cellPositionOffset;
-                cellPositionOffset.x += cellBound.x;
-                cellLine++;
+                cellList[_cellLine].transform.position = _firstCellinstantiateposition.position + _cellPositionOffset;
+                _cellPositionOffset.x += _cellBound.x;
+                _cellLine++;
             }
-            cellPositionOffset.x = 0;
-            cellPositionOffset.y -= cellBound.y;
+            _cellPositionOffset.x = 0;
+            _cellPositionOffset.y -= _cellBound.y;
         }
     }
 }

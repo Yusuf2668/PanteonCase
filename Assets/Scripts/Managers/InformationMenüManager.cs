@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class InformationMenüManager : MonoBehaviour
 {
-    [SerializeField] private BuildType buildType;
+    [SerializeField] private BuildType _buildType;
 
-    [SerializeField] private Image buildImage;
-    [SerializeField] private TextMeshProUGUI buildName;
-    [SerializeField] private Image ProductImage;
-    [SerializeField] private TextMeshProUGUI ProductName;
+    [SerializeField] private Image _buildImage;
+    [SerializeField] private TextMeshProUGUI _buildName;
+    [SerializeField] private Image _ProductImage;
+    [SerializeField] private TextMeshProUGUI _ProductName;
 
     private void OnEnable()
     {
@@ -23,16 +23,16 @@ public class InformationMenüManager : MonoBehaviour
         switch (gameObject.tag)
         {
             case "Barracks":
-                buildImage.sprite = buildType.barracksSprite;
-                buildName.text = buildType.barrakcsDescriptionText;
-                ProductImage.sprite = buildType.soldierSprite;
-                ProductName.text = buildType.soldierDescriptionText;
+                _buildImage.sprite = _buildType.barracksSprite;
+                _buildName.text = _buildType.barrakcsDescriptionText;
+                _ProductImage.sprite = _buildType.soldierSprite;
+                _ProductName.text = _buildType.soldierDescriptionText;
                 break;
             case "PowerPlant":
-                buildImage.sprite = buildType.powerPlantSprite;
-                buildName.text = buildType.powerPlantDescriptionText;
-                ProductImage.sprite = null;
-                ProductName.text = null;
+                _buildImage.sprite = _buildType.powerPlantSprite;
+                _buildName.text = _buildType.powerPlantDescriptionText;
+                _ProductImage.sprite = null;
+                _ProductName.text = null;
                 break;
         }
     }

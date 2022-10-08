@@ -21,6 +21,8 @@ namespace Pathfinding
         IAstarAI[] ais;
         Camera cam;
 
+        private RaycastHit2D _soldierHit;
+
         public void Start()
         {
             //Cache the Main Camera
@@ -37,6 +39,11 @@ namespace Pathfinding
         {
             if (Input.GetMouseButtonDown(1))
             {
+                _soldierHit = Physics2D.Raycast(cam.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, mask);
+                if (_soldierHit.collider != null)//seçilen yerde soldier olmamasý için kontrol yapýyor
+                {
+                    return;
+                }
                 UpdateTargetPosition();
             }
         }

@@ -9,18 +9,18 @@ public class ItemSelectorManager : MonoSingleton<ItemSelectorManager>
 
     public bool SelectedItem => _selectedItem;
 
-    [SerializeField] private LayerMask buildingHitLayerMask;
-    [SerializeField] private LayerMask productMenuHitLayerMask;
+    [SerializeField] private LayerMask _buildingHitLayerMask;
+    [SerializeField] private LayerMask _productMenuHitLayerMask;
 
     private Camera _camera;
 
-    private RaycastHit2D productMenuhit;
-    private RaycastHit2D buildingHit;
+    private RaycastHit2D _productMenuhit;
+    private RaycastHit2D _buildingHit;
 
     private bool _selectedItem = false;
-    private bool canDropItem = true;
+    private bool _canDropItem = true;
 
-    private GameObject selectedObject;
+    private GameObject _selectedObject;
 
     private void Awake()
     {
@@ -31,8 +31,8 @@ public class ItemSelectorManager : MonoSingleton<ItemSelectorManager>
     {
         if (_selectedItem)
         {
-            productMenuhit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, productMenuHitLayerMask);
-            if (productMenuhit.collider == null)
+            _productMenuhit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, _productMenuHitLayerMask);
+            if (_productMenuhit.collider == null)
             {
                 return;
             }
@@ -54,77 +54,76 @@ public class ItemSelectorManager : MonoSingleton<ItemSelectorManager>
     private void MouseLeftClick()
     {
         DropBuilding();
-        productMenuhit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, productMenuHitLayerMask);
-        if (productMenuhit.collider == null)
-        {
-            return;
-        }
         SelectBuildingProduct();
         SelectBuilding();
     }
 
-
-    private void CanDropItem(bool value)
+    private void CanDropItem(bool value)//seçilen obje baþka bir objeye temas ederse Rengini deðiþtirip bize bilgilendirme yapýyor
     {
-        if (!selectedObject)
+        if (!_selectedObject)
         {
             return;
         }
-        canDropItem = value;
-        if (!canDropItem)
+        _canDropItem = value;
+        if (!_canDropItem)
         {
-            selectedObject.GetComponent<SpriteRenderer>().color = Color.red;
+            _selectedObject.GetComponent<SpriteRenderer>().color = Color.red;
         }
         else
         {
-            selectedObject.GetComponent<SpriteRenderer>().color = Color.white;
+            _selectedObject.GetComponent<SpriteRenderer>().color = Color.white;
         }
     }
 
     private void FollowMouse()
     {
-        if (productMenuhit.transform.CompareTag("Cell") && selectedObject.CompareTag("PowerPlant"))
+        if (_productMenuhit.transform.CompareTag("Cell") && _selectedObject.CompareTag("PowerPlant"))
         {
-            selectedObject.transform.position = productMenuhit.transform.position + new Vector3(productMenuhit.transform.GetComponent<SpriteRenderer>().sprite.bounds.min.x, productMenuhit.transform.GetComponent<SpriteRenderer>().sprite.bounds.min.y * 2);
-            selectedObject.transform.position = new Vector3(Mathf.Clamp(selectedObject.transform.position.x, -1.2f + buildType.powerPlantSprite.bounds.size.x / 2, 1.2f), Mathf.Clamp(selectedObject.transform.position.y, -1.18f + buildType.powerPlantSprite.bounds.size.y / 3, 1.18f));
+            _selectedObject.transform.position = _productMenuhit.transform.position + new Vector3(_productMenuhit.transform.GetComponent<SpriteRenderer>().sprite.bounds.min.x, _productMenuhit.transform.GetComponent<SpriteRenderer>().sprite.bounds.min.y * 2);
+            _selectedObject.transform.position = new Vector3(Mathf.Clamp(_selectedObject.transform.position.x, -1.2f + buildType.powerPlantSprite.bounds.size.x / 2, 1.2f), Mathf.Clamp(_selectedObject.transform.position.y, -1.18f + buildType.powerPlantSprite.bounds.size.y / 3, 1.18f));
         }
-        else if (productMenuhit.transform.CompareTag("Cell") && selectedObject.CompareTag("Barracks"))
+        else if (_productMenuhit.transform.CompareTag("Cell") && _selectedObject.CompareTag("Barracks"))
         {
-            selectedObject.transform.position = productMenuhit.transform.position + productMenuhit.transform.GetComponent<SpriteRenderer>().sprite.bounds.min;
-            selectedObject.transform.position = new Vector3(Mathf.Clamp(selectedObject.transform.position.x, -1.2f + buildType.barracksSprite.bounds.size.x / 2, 1.2f - buildType.barracksSprite.bounds.size.x / 2.5f), Mathf.Clamp(selectedObject.transform.position.y, -1f + buildType.barracksSprite.bounds.size.y / 4, 1.2f - buildType.barracksSprite.bounds.size.y / 2));
+            _selectedObject.transform.position = _productMenuhit.transform.position + _productMenuhit.transform.GetComponent<SpriteRenderer>().sprite.bounds.min;
+            _selectedObject.transform.position = new Vector3(Mathf.Clamp(_selectedObject.transform.position.x, -1.2f + buildType.barracksSprite.bounds.size.x / 2, 1.2f - buildType.barracksSprite.bounds.size.x / 2.5f), Mathf.Clamp(_selectedObject.transform.position.y, -1f + buildType.barracksSprite.bounds.size.y / 4, 1.2f - buildType.barracksSprite.bounds.size.y / 2));
         }
     }
 
     private void DropBuilding()//Býrakma iþlemi burada yapýlýyor
     {
-        if (!selectedObject)
+        if (!_selectedObject)
         {
             return;
         }
-        if (_selectedItem && canDropItem)
+        if (_selectedItem && _canDropItem)
         {
             _selectedItem = false;
             EventManager.Instance.BuildingDropped();
-            selectedObject.GetComponent<BoxCollider2D>().isTrigger = false;
-            AstarPathEditor.MenuScan();
-            selectedObject = null;
+            _selectedObject.GetComponent<BoxCollider2D>().isTrigger = false;
+            AstarPathEditor.MenuScan();//PathFinder için ortam taramasýný baþlatýyor
+            _selectedObject = null;
         }
     }
-    private void SelectBuildingProduct()//saðdaki Product tablosundan yapý seçmemize yardýmcý oluyor
+    private void SelectBuildingProduct()//ekranýn solundaki Product tablosundan yapý seçmemize yardýmcý oluyor
     {
-        if (!_selectedItem && !productMenuhit.transform.CompareTag("Cell"))
+        _productMenuhit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, _productMenuHitLayerMask);
+        if (_productMenuhit.collider == null)
+        {
+            return;
+        }
+        if (!_selectedItem && !_productMenuhit.transform.CompareTag("Cell"))
         {
             _selectedItem = true;
-            selectedObject = ObjectPoolManager.Instance.GetPoolObject(productMenuhit.transform.tag);
+            _selectedObject = ObjectPoolManager.Instance.GetPoolObject(_productMenuhit.transform.tag);
         }
     }
     private void SelectBuilding()//Yerleþtirilen yapýlar arasýnda seçim yapmamýza yarýyor
     {
-        buildingHit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, buildingHitLayerMask);
-        if (buildingHit.collider == null)
+        _buildingHit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, _buildingHitLayerMask);
+        if (_buildingHit.collider == null)
         {
             return;
         }
-        EventManager.Instance.SelectedBuilding(buildingHit.transform.gameObject);
+        EventManager.Instance.SelectedBuilding(_buildingHit.transform.gameObject);
     }
 }

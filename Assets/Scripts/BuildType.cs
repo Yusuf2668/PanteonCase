@@ -20,4 +20,6 @@ public class BuildType : ScriptableObject
     public string powerPlantDescriptionText;
     public string soldierDescriptionText;
 
+    
+
 }
