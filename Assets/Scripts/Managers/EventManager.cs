@@ -16,7 +16,6 @@ public class EventManager : MonoSingleton<EventManager>
     public void LeftMouseClick() { onLeftMouseClick?.Invoke(); }
     public void RightMouseClick() { onRightMouseClick?.Invoke(); }
 
-
     public void SelectedBuilding(GameObject _gameObject)
     {
         if (onSelectedItem != null)
@@ -24,6 +23,7 @@ public class EventManager : MonoSingleton<EventManager>
             onSelectedItem(_gameObject);
         }
     }
+
     public void CanDropItem(bool value)
     {
         if (canDropItem != null)

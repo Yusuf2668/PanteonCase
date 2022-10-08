@@ -51,7 +51,7 @@ public class ItemSelectorManager : MonoSingleton<ItemSelectorManager>
         EventManager.Instance.onLeftMouseClick -= MouseLeftClick;
     }
 
-    private void MouseLeftClick()
+    private void MouseLeftClick()//Kullanýcý ekrana sol týk yaparsa çalýþýyor (evente baðlý)
     {
         DropBuilding();
         SelectBuildingProduct();
@@ -106,24 +106,32 @@ public class ItemSelectorManager : MonoSingleton<ItemSelectorManager>
     }
     private void SelectBuildingProduct()//ekranýn solundaki Product tablosundan yapý seçmemize yardýmcý oluyor
     {
-        _productMenuhit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, _productMenuHitLayerMask);
-        if (_productMenuhit.collider == null)
+        var hitObject = CreateRayOnScreen(_productMenuhit, _productMenuHitLayerMask);
+        if (!hitObject)
         {
             return;
         }
-        if (!_selectedItem && !_productMenuhit.transform.CompareTag("Cell"))
+        if (!_selectedItem && !hitObject.transform.CompareTag("Cell"))
         {
             _selectedItem = true;
-            _selectedObject = ObjectPoolManager.Instance.GetPoolObject(_productMenuhit.transform.tag);
+            _selectedObject = ObjectPoolManager.Instance.GetPoolObject(hitObject.transform.tag);
         }
     }
     private void SelectBuilding()//Yerleþtirilen yapýlar arasýnda seçim yapmamýza yarýyor
     {
-        _buildingHit = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, _buildingHitLayerMask);
-        if (_buildingHit.collider == null)
+        if (CreateRayOnScreen(_buildingHit, _buildingHitLayerMask))
         {
-            return;
+            EventManager.Instance.SelectedBuilding(CreateRayOnScreen(_buildingHit, _buildingHitLayerMask));
         }
-        EventManager.Instance.SelectedBuilding(_buildingHit.transform.gameObject);
+    }
+
+    public GameObject CreateRayOnScreen(RaycastHit2D raycastHit2D, LayerMask mask)
+    {
+        raycastHit2D = Physics2D.Raycast(_camera.ScreenPointToRay(Input.mousePosition).origin, Vector2.zero, Mathf.Infinity, mask);
+        if (raycastHit2D.collider == null)
+        {
+            return null;
+        }
+        return raycastHit2D.transform.gameObject;
     }
 }

@@ -39,7 +39,7 @@ public class SoldierSpawner : Spawner
             yield return new WaitForSeconds(0.5f);
             GameObject spawnSoldier = ObjectPoolManager.Instance.GetPoolObject("Soldier");
             spawnSoldier.SetActive(false);
-            base.SetObjectRandomSpawnPosition(spawnSoldier);
+            base.SetObjectRandomSpawnPosition(spawnSoldier);//Yaratýlan soldier larý rastgele pozisyonlara atýyor
         }
     }
 }

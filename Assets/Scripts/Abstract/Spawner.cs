@@ -9,7 +9,6 @@ public abstract class Spawner : MonoBehaviour
     protected int spawnObjectCount;
     protected int randomNumber;
 
-
     protected void SetObjectRandomSpawnPosition(GameObject _gameObject)//Askerlerin spawnlanmasý gereken noktalarý ayarlýyor
     {
         randomNumber = Random.Range(0, GameBoardManager.Instance.cellList.Count);

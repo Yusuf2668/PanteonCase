@@ -35,7 +35,6 @@ public class FactoryManager : MonoSingleton<FactoryManager>
             case "UIPowerPlantItem":
                 resultObject = Instantiate(buildPrefabType.powerPlantUIPrefab, parent);
                 break;
-
         }
         return resultObject;
     }

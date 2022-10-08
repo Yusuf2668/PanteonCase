@@ -9,8 +9,9 @@ public class InformationMenüManager : MonoBehaviour
     [SerializeField] private BuildType _buildType;
 
     [SerializeField] private Image _buildImage;
-    [SerializeField] private TextMeshProUGUI _buildName;
     [SerializeField] private Image _ProductImage;
+
+    [SerializeField] private TextMeshProUGUI _buildName;
     [SerializeField] private TextMeshProUGUI _ProductName;
 
     private void OnEnable()
@@ -18,7 +19,7 @@ public class InformationMenüManager : MonoBehaviour
         EventManager.Instance.onSelectedItem += ShowSelectedItemInformation;
     }
 
-    private void ShowSelectedItemInformation(GameObject gameObject)
+    private void ShowSelectedItemInformation(GameObject gameObject)//Seçilen objenin bilgilerini Information ekranında gösteriyor
     {
         switch (gameObject.tag)
         {
