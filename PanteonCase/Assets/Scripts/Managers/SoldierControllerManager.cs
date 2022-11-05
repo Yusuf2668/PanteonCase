@@ -5,7 +5,6 @@ using UnityEngine;
 public class SoldierControllerManager : MonoBehaviour, ISelector
 {
     [SerializeField] private LayerMask _soldierLayerMask;
-
     [SerializeField] GameObject _target;
     private GameObject _selectedSoldier;
 

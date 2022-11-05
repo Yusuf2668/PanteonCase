@@ -15,12 +15,9 @@ public class SoldierSpawner : Spawner
 
     private void StartCreateSoldiersCoroutine()
     {
-        if (base.haveSpawnObject)
-        {
-            return;
-        }
+        if (base.haveSpawnObject) return;
         base.haveSpawnObject = true;
-        StartCoroutine("CreateSoldiers");
+        StartCoroutine(CreateSoldiers());
     }
 
     IEnumerator CreateSoldiers()

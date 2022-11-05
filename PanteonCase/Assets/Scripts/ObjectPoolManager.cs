@@ -16,6 +16,11 @@ public class ObjectPoolManager : MonoSingleton<ObjectPoolManager>
 
     private void Awake()
     {
+        PopulatePool();
+    }
+
+    private void PopulatePool()
+    {
         for (int i = 0; i < poolList.Length; i++)
         {
             poolList[i].poolObjectList = new Queue<GameObject>();

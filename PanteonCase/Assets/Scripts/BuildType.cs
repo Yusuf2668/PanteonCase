@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "BuildObjectType", fileName = "BuildObjectType")]
 public class BuildType : ScriptableObject
 {
+    #region References
     public GameObject cellPrefab;
     public GameObject powerPlantUIPrefab;
     public GameObject barrackUIPrefab;
@@ -19,7 +20,6 @@ public class BuildType : ScriptableObject
     public string barrakcsDescriptionText;
     public string powerPlantDescriptionText;
     public string soldierDescriptionText;
-
-    
+    #endregion
 
 }

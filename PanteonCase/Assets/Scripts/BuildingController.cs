@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BuildingController : MonoBehaviour
 {
+    private const string _cellTag = "Cell";
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Cell"))
+        if (collision.CompareTag(_cellTag))
         {
             return;
         }
@@ -15,7 +16,7 @@ public class BuildingController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Cell"))
+        if (collision.CompareTag(_cellTag))
         {
             return;
         }

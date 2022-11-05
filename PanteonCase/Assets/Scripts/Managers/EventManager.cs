@@ -6,13 +6,16 @@ using System.Collections;
 
 public class EventManager : MonoSingleton<EventManager>
 {
+    #region Action
     public event Action<GameObject> onSelectedItem;
     public event Action<bool> canDropItem;
 
     public event Action buildingDropped;
     public event Action onLeftMouseClick;
     public event Action onRightMouseClick;
+    #endregion
 
+    
     public void LeftMouseClick() { onLeftMouseClick?.Invoke(); }
     public void RightMouseClick() { onRightMouseClick?.Invoke(); }
 
@@ -45,7 +48,4 @@ public class EventManager : MonoSingleton<EventManager>
             RightMouseClick();
         }
     }
-
-
-
 }
